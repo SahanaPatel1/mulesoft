@@ -1,0 +1,17 @@
+return request for our order
+
+pre request..
+1. select completed item that we need to create a return for
+
+2. pickup address
+
+scenario
+
+1. sign in to our account
+2. getting our order details
+3.create a return
+4. reason for return
+5. refund mechanism: mode of payment
+                     card details
+6.return completed: notification sent
+7. return tracking ID update
