@@ -1,0 +1,219 @@
+#%RAML 1.0
+title: My-account-api
+
+protocols: [HTTP,HTTPS]
+
+/accounts:
+  post:
+    description: create saving account for the customer
+    body:
+      application/json:
+        example:
+          savingsAccount.json
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              !include accountsResponse.json
+  get:
+    description: fetch balance account base of customer id
+    queryParameters:
+      customerID:
+        type: string
+        required: true
+        example:
+          "cust1234"
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              !include accountsResponse.json
+
+/{accountId}:
+  get:
+    description: fetch savings account
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              !include savingsAccount.json
+
+/balances:
+  get:
+    description: fetch balance of the account
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              !include balances.json
+
+/transaction:
+  get:
+    description: fetch transaction of the account
+    queryParameters:
+      fromdate:
+        type: string
+        required: false
+        example:
+          "2021-11-12"
+      todate:
+        type: string
+        required: false
+        example:
+          "2021-11-30"
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              !include transaction.json
+
+/{transactionId}:
+  get:
+    description: fetch transaction of the account
+    queryParameters:
+      fromdate:
+        type: string
+        required: false
+        example:
+          "2021-11-12"
+      todate:
+        type: string
+        required: false
+        example:
+          "2021-11-30"
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              !include transaction.json
+
+balance.json
+{
+  "Data": {
+    "Balance": [
+      {
+        "AccountId": "22289",
+        "Amount": {
+          "Amount": "1230.00",
+          "Currency": "GBP"
+        },
+        "CreditDebitIndicator": "Credit",
+        "Type": "InterimAvailable",
+        "DateTime": "2017-04-05T10:43:07+00:00",
+        "CreditLine": [
+          {
+            "Included": true,
+            "Amount": {
+              "Amount": "1000.00",
+              "Currency": "GBP"
+            },
+            "Type": "Temporary"
+          }
+        ]
+      },
+      {
+        "AccountId": "31820",
+        "Amount": {
+          "Amount": "57.36",
+          "Currency": "GBP"
+        },
+        "CreditDebitIndicator": "Debit",
+        "Type": "InterimBooked",
+        "DateTime": "2017-05-02T14:22:09+00:00"
+      }
+    ]
+  },
+  "Links": {
+    "Self": "https://api.alphabank.com/open-banking/v3.1/aisp/balances/"
+  },
+  "Meta": {
+    "TotalPages": 1
+  }
+}
+
+exchange.json
+{"main":"my-account-api.raml","name":"My-account-api","classifier":"raml","tags":[]}
+
+savings.json
+{
+  "Data": {
+    "Account": [
+      {
+        "AccountId": "22289",
+		"Status": "Enabled",
+		"StatusUpdateDateTime": "2019-01-01T06:06:06+00:00",
+        "Currency": "GBP",
+        "AccountType": "Personal",
+        "AccountSubType": "CurrentAccount",
+        "Nickname": "Bills"
+      },
+      {
+        "AccountId": "31820",
+		"Status": "Enabled",
+		"StatusUpdateDateTime": "2018-01-01T06:06:06+00:00",
+        "Currency": "GBP",
+        "AccountType": "Personal",
+        "AccountSubType": "CurrentAccount",
+        "Nickname": "Household"
+      }
+    ]
+  },
+  "Links": {
+    "Self": "https://api.alphabank.com/open-banking/v3.1/aisp/accounts/"
+  },
+  "Meta": {
+    "TotalPages": 1
+  }
+}
+
+transaction.json
+{
+  "Data": {
+    "Transaction": [
+      {
+        "AccountId": "22289",
+        "TransactionId": "123",
+        "TransactionReference": "Ref 1",
+        "Amount": {
+          "Amount": "10.00",
+          "Currency": "GBP"
+        },
+        "CreditDebitIndicator": "Credit",
+        "Status": "Booked",
+        "BookingDateTime": "2017-04-05T10:43:07+00:00",
+        "ValueDateTime": "2017-04-05T10:45:22+00:00",
+        "TransactionInformation": "Cash from Aubrey",
+        "BankTransactionCode": {
+          "Code": "ReceivedCreditTransfer",
+          "SubCode": "DomesticCreditTransfer"
+        },
+        "ProprietaryBankTransactionCode": {
+          "Code": "Transfer",
+          "Issuer": "AlphaBank"
+        },
+        "Balance": {
+          "Amount": {
+            "Amount": "230.00",
+            "Currency": "GBP"
+          },
+          "CreditDebitIndicator": "Credit",
+          "Type": "InterimBooked"
+        }
+      }
+    ]
+  },
+  "Links": {
+    "Self": "https://api.alphabank.com/open-banking/v3.1/aisp/accounts/22289/transactions/"
+  },
+  "Meta": {
+    "TotalPages": 1,
+	"FirstAvailableDateTime": "2017-05-03T00:00:00+00:00",
+	"LastAvailableDateTime": "2017-12-03T00:00:00+00:00"
+  }
+}
