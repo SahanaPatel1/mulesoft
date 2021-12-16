@@ -1,0 +1,80 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/sources/vcs/projects/48ed3cb6-6731-4c6a-acf5-48c4d89ffb87/master/m/return?return+item+ID=FL0265765566 # 
+title: return order
+description: return request for item placed
+
+/login:
+  get:
+    description: Login by entering email id and password
+    queryParameters:
+      username:
+        type: string
+        required: true
+        minLength: 5
+        maxLength: 10
+      password:
+        type: string
+        required: true
+        minLength: 5
+        maxLength: 10
+
+        
+        
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              "Login Successful"
+      403:
+       body:
+        application/json:
+          example:  "Login Unsucessful and attempts remaining 2" 
+
+
+  
+/itemsordered:
+  get:
+    description: fetch completed items that we need to create a return for.
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+               [
+              "item orderedID": "FL0265765566",
+              "ItemType": "tshirt",
+
+              "Amount": {
+              "Amount": "100.00",
+              "Currency": "INR"
+        },
+        
+            ]
+            
+/itemreturn:
+  post:
+    description: create a return
+    queryParameters:
+      return item ID:
+        type: string
+        required: true
+        example:
+          "FL0265765566"
+    responses:
+      200:
+         description: create  return
+         body:
+          application/json:
+            example:
+              "message": "return placed successfully"
+      400:
+        description: failure
+        body:
+          application/json:
+            example:
+              "Message": "failed"
+© 2021 GitHub, Inc.
+Terms
+Privacy
+Security
